@@ -1,4 +1,3 @@
-# from typing import *
 import abc
 
 
@@ -9,6 +8,6 @@ class IPEEntity:
         self.offset = offset
         self._initialized = False
 
-    @abc.abstractmethod
-    def is_initalized(self) -> bool:
-        return self._initialized
+    # @abc.abstractmethod
+    # def is_initalized(self) -> bool:
+    #     return self._initialized

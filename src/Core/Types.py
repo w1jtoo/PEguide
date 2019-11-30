@@ -16,3 +16,5 @@ class Type(IntEnum):
             return "H"
         elif int(self) == 1:
             return "c"
+        else: 
+            raise Exception("Wrong type of structure. ")

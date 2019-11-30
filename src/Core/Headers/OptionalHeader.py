@@ -1,15 +1,15 @@
-from src.Core.Header import Header
+from src.Core.Header import Struct
 from src.Core.Types import Type
 from src.Common.utils import (
     to_number,
     to_empty,
     to_date,
     get_to_number,
-    to_int_le,
+    get_int_le,
 )
 
 
-class OptionalHeader(Header):
+class OptionalHeader(Struct):
     def __init__(self, offset):
         super().__init__("Optional Header", "", offset=offset)
 
@@ -22,31 +22,31 @@ class OptionalHeader(Header):
         self.set_field(
             "MajorLinkerVersion",
             1,
-            bytes_convertor=get_to_number(1, Type.BYTE, base=to_int_le),
+            bytes_convertor=get_to_number(1, Type.BYTE, base=lambda x: x),
             size_type=Type.BYTE,
         )
         self.set_field(
             "MinorLinkerVersion",
             1,
-            bytes_convertor=get_to_number(1, Type.BYTE, base=to_int_le),
+            bytes_convertor=get_to_number(1, Type.BYTE, base=lambda x: x),
             size_type=Type.BYTE,
         )
         self.set_field(
             "SizeOfCode",
             4,
-            bytes_convertor=get_to_number(4, Type.DWORD, base=to_int_le),
+            bytes_convertor=get_to_number(4, Type.DWORD, base=lambda x: x),
             size_type=Type.DWORD,
         )
         self.set_field(
             "SizeOfInitializedData",
             4,
-            bytes_convertor=get_to_number(4, Type.DWORD, base=to_int_le),
+            bytes_convertor=get_to_number(4, Type.DWORD, base=lambda x: x),
             size_type=Type.DWORD,
         )
         self.set_field(
             "SizeOfUninitializedData",
             4,
-            bytes_convertor=get_to_number(4, Type.DWORD, base=to_int_le),
+            bytes_convertor=get_to_number(4, Type.DWORD, base=lambda x: x),
             size_type=Type.DWORD,
         )
         self.set_field(
@@ -101,44 +101,44 @@ class OptionalHeader(Header):
         self.set_field(
             "MajorOperatingSystemVersion",
             2,
-            bytes_convertor=get_to_number(2, Type.WORD, base=to_int_le),
+            bytes_convertor=get_to_number(2, Type.WORD, base=lambda x: x),
             size_type=Type.WORD,
         )
         self.set_field(
             "MinorOperatingSystemVersion",
             2,
-            bytes_convertor=get_to_number(2, Type.WORD, base=to_int_le),
+            bytes_convertor=get_to_number(2, Type.WORD, base=lambda x: x),
             size_type=Type.WORD,
         )
         self.set_field(
             "MajorImageVersion",
             2,
-            bytes_convertor=get_to_number(2, Type.WORD, base=to_int_le),
+            bytes_convertor=get_to_number(2, Type.WORD, base=lambda x: x),
             size_type=Type.WORD,
         )
         self.set_field(
             "MinorImageVersion",
             2,
-            bytes_convertor=get_to_number(2, Type.WORD, base=to_int_le),
+            bytes_convertor=get_to_number(2, Type.WORD, base=lambda x: x),
             size_type=Type.WORD,
         )
         self.set_field(
             "MajorSubsystemVersion",
             2,
-            bytes_convertor=get_to_number(2, Type.WORD, base=to_int_le),
+            bytes_convertor=get_to_number(2, Type.WORD, base=lambda x: x),
             size_type=Type.WORD,
         )
         self.set_field(
             "MinorSubsystemVersion",
             2,
-            bytes_convertor=get_to_number(2, Type.WORD, base=to_int_le),
+            bytes_convertor=get_to_number(2, Type.WORD, base=lambda x: x),
             size_type=Type.WORD,
         )
 
         self.set_field(
             "Win32VersionValue",
             4,
-            bytes_convertor=get_to_number(4, Type.DWORD, base=to_int_le),
+            bytes_convertor=get_to_number(4, Type.DWORD, base=lambda x: x),
             size_type=Type.DWORD,
         )
         self.set_field(

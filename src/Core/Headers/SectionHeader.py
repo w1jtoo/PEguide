@@ -1,11 +1,11 @@
-from src.Core.Header import Header
+from src.Core.Header import Struct
 from src.Core.Types import Type
 from src.Common.utils import to_empty, to_number, get_to_number
 
 
-class SectionHeader(Header):
+class SectionHeader(Struct):
     def __init__(self, offset):
-        super().__init__("SectionHeader", "", offset=offset)
+        super().__init__("", "", offset=offset)
 
     def init_fields(self):
         # fix descrition
@@ -45,12 +45,11 @@ class SectionHeader(Header):
         self.set_field("NumberOfLinenumbers", 2, bytes_convertor=to_number)
         self.set_field("Characteristics", 4, bytes_convertor=to_number)
 
-
 class SectionHeaders:
     def __init__(self, offset, section_count):
         self.offset = offset
         self.section_count = section_count
-        self.sections = {}
+        self.sections = []
 
     def init_sections(self, stream):
         file_pointer = self.offset
@@ -58,13 +57,13 @@ class SectionHeaders:
             section = SectionHeader(file_pointer)
             section.init_fields()
             file_pointer = section.fill_in_fields(stream)
-            self.sections[section.Name] = section
+            self.sections.append(section)
         return file_pointer
 
     def __str__(self):
         result = []
-        for section in self.sections.keys():
+        for section in self.sections:
             result.append(section.decode())
-            temp = str(self.sections[section]).split("\n")[2:]
+            temp = str(sections).split("\n")[2:]
             result += map(lambda x: "      " + x, temp)
         return "\n".join(result)

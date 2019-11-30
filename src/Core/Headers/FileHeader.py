@@ -1,9 +1,9 @@
-from src.Core.Header import Header
+from src.Core.Header import Struct
 from src.Core.Types import Type
 from src.Common.utils import to_number, to_empty, to_date, get_to_number
 
 
-class FileHeader(Header):
+class FileHeader(Struct):
     def __init__(self, offset):
         super().__init__("File Header", "", offset=offset)
 

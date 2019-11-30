@@ -1,9 +1,9 @@
-from src.Core.Header import Header
+from src.Core.Header import Struct
 from src.Core.Types import Type
 from src.Common.utils import to_number, to_empty, to_date
 
 
-class DateDirectoriesHeader(Header):
+class DateDirectoriesHeader(Struct):
     def __init__(self, offset):
         super().__init__("Optional Header Data Directories", "", offset=offset)
 

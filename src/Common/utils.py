@@ -13,6 +13,25 @@ def convert_to_hex(_bytes: bytes) -> List[int]:
     return result
 
 
+import string
+
+
+def decode_from_cp(_bytes: bytes) -> str:
+    decoded = _bytes.decode("cp1251", "ignore")
+    result = []
+    for letter in decoded:
+        if (
+            letter in string.digits
+            or letter in string.ascii_letters
+            or letter in string.punctuation
+        ):
+            result.append(letter)
+        else:
+            result.append(".")
+
+    return "".join(result)
+
+
 def to_number(_bytes: bytes) -> int:
     return sum(_bytes)
 
@@ -39,9 +58,16 @@ def get_to_number(size: int, _type: Type, endian="<", base=hex):
     return _to_number
 
 
-def to_int_le(_bytes: bytes) -> int:
-    return _bytes
+def get_int_le(_bytes: bytes, _type: Type= Type.WORD) -> int:
+    size = len(_bytes)
+    return struct.unpack("<" + _type.to_c_string() * (size // int(_type)), _bytes)[0]
 
+def align_down(index:int, align:int)-> int:
+    return index & (~(align-1))
+
+
+def align_up(index:int, align:int) -> int:
+    return align_down(index, align) + align if (index & (align-1)) else index
 
 import time
 

@@ -4,7 +4,7 @@ from collections import namedtuple
 from src.Core.Types import Type
 
 
-class Header(IPEEntity):
+class Struct(IPEEntity):
     Container = namedtuple(
         "Container", "size type description bytes_convertor"
     )
@@ -14,6 +14,7 @@ class Header(IPEEntity):
         self.__fields = {}
         self.__values = {}
         self.init_fields()
+        self.__error:str = ""
 
     def init_fields(self) -> None:
         raise NotImplementedError()
@@ -26,20 +27,20 @@ class Header(IPEEntity):
         description="",
         bytes_convertor=None,
     ) -> None:
-        """Initialize new field. Using to fill it in fields information
-		 and get stuctured data in future.
+        """Initialize new field. Use to fill in field's information
+		 and to get stuctured data in future.
 			Rely on order of field adding.  
-		   Use size, name.  """
+		   Use size, name, etc. """
         if not bytes_convertor:
             bytes_convertor = lambda x: x.decode("cp1251")
-        self.__fields[name] = Header.Container(
+        self.__fields[name] = Struct.Container(
             size, size_type, description, bytes_convertor
         )
 
     def get_full_size(self) -> int:
         return sum(self.__fields.values())
 
-    def fill_in_fields(self, stream: "file") -> int:
+    def fill_in_fields(self, stream) -> int:
         stream.seek(self.offset, 0)
         for field in self.__fields.keys():
             if self.__values.get(field):
@@ -48,12 +49,17 @@ class Header(IPEEntity):
         return stream.tell()
 
     def __str__(self):
+        if self.__error:
+            return self.__error
         result = []
         result.append(f"{self.name} \n {self.description}")
         position = self.offset
         for field in self.__fields:
             hex_date = " ".join(convert_to_hex(self.__values[field]))
-            _bytes = self.__fields[field].bytes_convertor(self.__values[field])
+            try:
+                _bytes = self.__fields[field].bytes_convertor(self.__values[field])
+            except Exception:
+                _bytes = "????????"
             _type = self.__fields[field].type
 
             if int(_type) < self.__fields[field].size:
@@ -72,3 +78,11 @@ class Header(IPEEntity):
         if value in self.__values:
             return self.__values[value]
         raise AttributeError
+
+    def get(self, key:str)-> "Struct":
+        if key in self.__values:
+            return self.__values[key]
+        return None
+    
+    def set_error(self, description:str)-> None:
+        self.__error = description
