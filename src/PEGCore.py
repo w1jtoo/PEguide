@@ -1,15 +1,16 @@
+from typing import Dict, List, Optional
+
+from src.Common.utils import align_down, align_up, convert_to_hex, get_int_le
+from src.Core.Directories.ExportDirectory import ExportDirectory
 from src.Core.Header import Struct
+from src.Core.Headers.DateDirectoriesHeader import DateDirectoriesHeader
 from src.Core.Headers.DosHeader import DosHeader
-from src.Core.Headers.PeHeader import PeHeader
 from src.Core.Headers.FileHeader import FileHeader
 from src.Core.Headers.OptionalHeader import OptionalHeader
-from src.Core.Headers.DateDirectoriesHeader import DateDirectoriesHeader
+from src.Core.Headers.PeHeader import PeHeader
 from src.Core.Headers.SectionHeader import SectionHeaders
-from src.Core.Types import Type
 from src.Core.Section import Section
-from typing import Dict, List, Optional
-from src.Common.utils import convert_to_hex, get_int_le, align_down, align_up
-from src.Core.Directories.ExportDirectory import ExportDirectory
+from src.Core.Types import Type
 
 
 class Core:
