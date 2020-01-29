@@ -2,7 +2,7 @@
 
 Show the structure of portable executable (PE) files under the Windows family of operating systems.
 
-![Review](readme\preview.png)
+![Review](ReadMe/Preview.PNG)
 
 ## About
 
