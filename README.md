@@ -6,7 +6,7 @@ Show the structure of portable executable (PE) files under the Windows family of
 
 ## About
 
-Before watch what insade RE file we shoul install requirements:
+Before watch what insade RE file we should install requirements:
 
     python -m pip install -r requirements.txt
 
