@@ -30,4 +30,4 @@ Working with extentions:
 - __.ACM__ _unstable_
 - __.SYS__
 - __.DVR__ _unstable_
-- other ones not tested or not supported at all.
+- other ones doesn't tested or doesn't have supporting at all.
