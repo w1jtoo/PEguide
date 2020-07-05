@@ -18,29 +18,36 @@ class Core:
         self.file_name = file_name
         self.file_pointer = 0
 
-    def read_headers(self):
+    def read_headers(self) -> None:
+        # TODO: read exactly needed header if it possible 
         dos_header = pe_header = file_header = None
         self.file_pointer = 0
 
         with open(self.file_name, mode="rb") as f:
+            # init dos header              -- in linear order
             dos_header = DosHeader(self.file_pointer)
             dos_header.fill_in_fields(f)
-
+            
+            # init PE header               -- in linear order
             pe_header = PeHeader(self.file_pointer + sum(dos_header.e_lfanew))
             pe_header.fill_in_fields(f)
-
+            
+            # init File Header             -- in linear order
             file_header = FileHeader(sum(dos_header.e_lfanew) + 4)
             self.file_pointer = file_header.fill_in_fields(f)
-
+            
+            # init optional header         -- not linear order
             optional_header = OptionalHeader(self.file_pointer)
             self.file_pointer = optional_header.fill_in_fields(f)
             optional_header.offset = self.file_pointer
             optional_header.afterward_init()
             self.file_pointer = optional_header.fill_in_fields(f)
 
+            # init Date Directories header -- in linear order
             date_dir_header = DateDirectoriesHeader(self.file_pointer)
             self.file_pointer = date_dir_header.fill_in_fields(f)
-
+            
+            # init Sectionls               -- in linear order 
             sections = SectionHeaders(
                 self.file_pointer, sum(file_header.NumberOfSections)
             )
@@ -54,9 +61,15 @@ class Core:
         self.section_headers = sections
 
     def get_va(self, rva: int) -> int:
+        if self.optional_header.get("ImageBase") is None: 
+            raise Error("Image Base should be initilised before converting")
+        
         return get_int_le(self.optional_header.get("ImageBase"), _type=Type.DWORD) + rva
 
     def get_rva(self, va: int) -> int:
+        if self.optional_header.get("ImageBase") is None: 
+            raise Error("Image Base should be initilised before converting")
+        
         return va - get_int_le(self.optional_header.get("ImageBase"), _type=Type.DWORD)
 
     def define_section(self, rva: int) -> Optional[Struct]:
@@ -94,7 +107,7 @@ class Core:
                 section.fill_in_raw(f)
                 self.sections.append(section)
 
-    def write_headers(self):
+    def write_headers(self) -> None:
         print(120 * "=")
         print("\n This file have next headers:")
         print(self.dos_header)
@@ -104,7 +117,7 @@ class Core:
         print(self.date_dir_header)
         print(120 * "=")
 
-    def write_tables(self):
+    def write_tables(self) -> None:
         print(120 * "=")
         print(self.export_directory)
         print(120 * "=")
@@ -122,7 +135,7 @@ class Core:
             else:
                 self.export_directory.set_error("\n NO EXPORT TABLE WAS FOUND. \n")
 
-    def write_sections(self):
+    def write_sections(self) -> None:
         print(120 * "=")
         print("Next sections was found. ")
         result = []
