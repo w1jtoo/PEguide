@@ -35,7 +35,7 @@ class Core:
             # init File Header             -- in linear order
             file_header = FileHeader(sum(dos_header.e_lfanew) + 4)
             self.file_pointer = file_header.fill_in_fields(f)
-            
+
             # init optional header         -- not linear order
             optional_header = OptionalHeader(self.file_pointer)
             self.file_pointer = optional_header.fill_in_fields(f)
