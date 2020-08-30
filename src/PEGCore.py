@@ -46,7 +46,7 @@ class Core:
             # init Date Directories header -- in linear order
             date_dir_header = DateDirectoriesHeader(self.file_pointer)
             self.file_pointer = date_dir_header.fill_in_fields(f)
-            
+
             # init Sectionls               -- in linear order 
             sections = SectionHeaders(
                 self.file_pointer, sum(file_header.NumberOfSections)
