@@ -67,7 +67,7 @@ class Core:
         return get_int_le(self.optional_header.get("ImageBase"), _type=Type.DWORD) + rva
 
     def get_rva(self, va: int) -> int:
-        if self.optional_header.get("ImageBase") is None: 
+        if self.optional_header.get("ImageBase") is None:
             raise Error("Image Base should be initilised before converting")
         
         return va - get_int_le(self.optional_header.get("ImageBase"), _type=Type.DWORD)
